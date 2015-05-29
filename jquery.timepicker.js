@@ -398,6 +398,7 @@
 			}
 		}
 
+
 		return settings;
 	}
 
@@ -479,46 +480,61 @@
 			}
 		}
 
-		for (var i=start, j=0; i <= end; j++, i += stepFunc(j)*60) {
-			var timeInt = i;
-			var timeString = _int2time(timeInt, settings);
+		if (settings.allowedTimeRanges.length === 0) {
+			for (var i=start, j=0; i <= end; j++, i += stepFunc(j)*60) {
+				var timeInt = i;
+				var timeString = _int2time(timeInt, settings);
 
-			if (settings.useSelect) {
-				var row = $('<option />', { 'value': timeString });
-				row.text(timeString);
-			} else {
-				var row = $('<li />');
-				row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
-				row.text(timeString);
-			}
-
-			if ((settings.minTime !== null || settings.durationTime !== null) && settings.showDuration) {
-				var durationString = _int2duration(i - durStart, settings.step);
 				if (settings.useSelect) {
-					row.text(row.text()+' ('+durationString+')');
+					var row = $('<option />', { 'value': timeString });
+					row.text(timeString);
 				} else {
-					var duration = $('<span />', { 'class': 'ui-timepicker-duration' });
-					duration.text(' ('+durationString+')');
-					row.append(duration);
-				}
-			}
-
-			if (drCur < drLen) {
-				if (timeInt >= dr[drCur][1]) {
-					drCur += 1;
+					var row = $('<li />');
+					row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
+					row.text(timeString);
 				}
 
-				if (dr[drCur] && timeInt >= dr[drCur][0] && timeInt < dr[drCur][1]) {
+				if ((settings.minTime !== null || settings.durationTime !== null) && settings.showDuration) {
+					var durationString = _int2duration(i - durStart, settings.step);
 					if (settings.useSelect) {
-						row.prop('disabled', true);
+						row.text(row.text()+' ('+durationString+')');
 					} else {
-						row.addClass('ui-timepicker-disabled');
+						var duration = $('<span />', { 'class': 'ui-timepicker-duration' });
+						duration.text(' ('+durationString+')');
+						row.append(duration);
 					}
 				}
-			}
 
-			list.append(row);
-		}
+				if (drCur < drLen) {
+					if (timeInt >= dr[drCur][1]) {
+						drCur += 1;
+					}
+
+					if (dr[drCur] && timeInt >= dr[drCur][0] && timeInt < dr[drCur][1]) {
+						if (settings.useSelect) {
+							row.prop('disabled', true);
+						} else {
+							row.addClass('ui-timepicker-disabled');
+						}
+					}
+				}
+
+				list.append(row);
+			}
+		}else{
+			var allowedTimeRanges = settings.allowedTimeRanges;
+			var length = allowedTimeRanges.length;
+
+	    for (var i = 0; i < length; i++) {
+	      var timeInt = _time2int(allowedTimeRanges[i], settings);
+
+	      var row = $('<li />');
+				row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
+				row.text(_int2time(timeInt, settings));
+	      list.append(row);
+	    }
+
+		};
 
 		wrapped_list.data('timepicker-input', self);
 		self.data('timepicker-list', wrapped_list);
@@ -1172,6 +1188,7 @@
 		appendTo: 'body',
 		orientation: 'l',
 		disableTimeRanges: [],
+		allowedTimeRanges: [],
 		closeOnWindowScroll: false,
 		typeaheadHighlight: true,
 		noneOption: false,

@@ -165,6 +165,23 @@ $('#onselectExample').on('changeTime', function() {
     ]
 });</pre>
         </article>
+        <article>
+            <div class="demo">
+                <h2>AllowedRangesExample Example</h2>
+                <p>Render only allowed time.</p>
+                <p><input id="allowedimeRangesExample" type="text" class="time" /></p>
+            </div>
+
+            <script>
+                $(function() {
+                    $('#allowedimeRangesExample').timepicker({ 'allowedTimeRanges': ['1am', '2am'] });
+                });
+            </script>
+
+            <pre class="code" data-language="javascript">$('#allowedimeRangesExample').timepicker({
+    'allowedTimeRanges': ['1am', '2am']
+});</pre>
+        </article>
 
         <article>
             <div class="demo">
