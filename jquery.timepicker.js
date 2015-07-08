@@ -521,7 +521,7 @@
 
 				list.append(row);
 			}
-		}else{
+		} else {
 			var allowedTimeRanges = settings.allowedTimeRanges;
 			var length = allowedTimeRanges.length;
 
@@ -531,7 +531,7 @@
 			
 				if (settings.useSelect) {
 					var row = $('<option />', {'value': timeString});
-				}else {
+				} else {
 					var row = $('<li />');
 					row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
 				}
