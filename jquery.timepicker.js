@@ -526,12 +526,17 @@
 			var length = allowedTimeRanges.length;
 
 	    for (var i = 0; i < length; i++) {
-	      var timeInt = _time2int(allowedTimeRanges[i], settings);
+			var timeInt = _time2int(allowedTimeRanges[i], settings);
+			var timeString = _int2time(timeInt, settings);
 
-	      var row = $('<li />');
+			if (settings.useSelect) {
+				var row = $('<option />', {'value': timeString});
+			}else {
+				var row = $('<li />');
 				row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
-				row.text(_int2time(timeInt, settings));
-	      list.append(row);
+			}
+			row.text(timeString);
+	      	list.append(row);
 	    }
 
 		};
