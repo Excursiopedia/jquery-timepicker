@@ -521,18 +521,23 @@
 
 				list.append(row);
 			}
-		}else{
+		} else {
 			var allowedTimeRanges = settings.allowedTimeRanges;
 			var length = allowedTimeRanges.length;
 
-	    for (var i = 0; i < length; i++) {
-	      var timeInt = _time2int(allowedTimeRanges[i], settings);
-
-	      var row = $('<li />');
-				row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
-				row.text(_int2time(timeInt, settings));
-	      list.append(row);
-	    }
+			for (var i = 0; i < length; i++) {
+				var timeInt = _time2int(allowedTimeRanges[i], settings);
+				var timeString = _int2time(timeInt, settings);
+			
+				if (settings.useSelect) {
+					var row = $('<option />', {'value': timeString});
+				} else {
+					var row = $('<li />');
+					row.data('time', (timeInt <= 86400 ? timeInt : timeInt % 86400));
+				}
+				row.text(timeString);
+			      	list.append(row);
+			}
 
 		};
 
